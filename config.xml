@@ -1,0 +1,48 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1400.v7fd111b_ec82f">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@2.2175.v76a_fff0a_2618"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@2.2175.v76a_fff0a_2618">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@3880.vb_ef4b_5cfd270">
+    <script>pipeline {
+    agent any
+
+    tools {
+        // Specify the Ant tool defined in Jenkins
+        ant &apos;ANT_HOME&apos;
+    }
+
+    stages {
+        stage(&apos;Compile&apos;) {
+            steps {
+                // Checkout the source code from the specified GitHub repository and branch
+                git branch: &apos;main&apos;, url: &apos;https://github.com/kutty27/AntProject.git&apos;
+
+                // Compile the Ant project using the specified Ant tool
+                bat &apos;&quot;%ANT_HOME%\\bin\\ant&quot; compile&apos;
+            }
+        }
+    }
+
+    post {
+        success {
+            // Additional post-build actions if needed
+            echo &apos;Ant project compiled successfully!&apos;
+        }
+    }
+}
+</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
